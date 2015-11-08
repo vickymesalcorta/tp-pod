@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast-all</artifactId>
-			<version>3.5.3</version>
+			<version>3.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.advantageous.boon</groupId>
