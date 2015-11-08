@@ -67,49 +67,6 @@ public class Movie implements DataSerializable {
     private String response;
 
     public Movie(){}
-    
-    public Movie(String title, String year, String rated, String released, String runtime, String genre,
-            String director, String writer, String actors, String plot, String language, String country, String awards,
-            String poster, String metascore, String imdbRating, String imdbVotes, String imdbId, String type,
-            String tomatoMeter, String tomatoImage, String tomatoRating, String tomatoReviews, String tomatoFresh,
-            String tomatoRotten, String tomatoConsensus, String tomatoUserMeter, String tomatoUserRating,
-            String tomatoUserReviews, String dvd, String boxOffice, String production, String website,
-            String response) {
-        this.title = title;
-        this.year = year;
-        this.rated = rated;
-        this.released = released;
-        this.runtime = runtime;
-        this.genre = genre;
-        this.director = director;
-        this.writer = writer;
-        this.actors = actors;
-        this.plot = plot;
-        this.language = language;
-        this.country = country;
-        this.awards = awards;
-        this.poster = poster;
-        this.metascore = metascore;
-        this.imdbRating = imdbRating;
-        this.imdbVotes = imdbVotes;
-        this.imdbId = imdbId;
-        this.type = type;
-        this.tomatoMeter = tomatoMeter;
-        this.tomatoImage = tomatoImage;
-        this.tomatoRating = tomatoRating;
-        this.tomatoReviews = tomatoReviews;
-        this.tomatoFresh = tomatoFresh;
-        this.tomatoRotten = tomatoRotten;
-        this.tomatoConsensus = tomatoConsensus;
-        this.tomatoUserMeter = tomatoUserMeter;
-        this.tomatoUserRating = tomatoUserRating;
-        this.tomatoUserReviews = tomatoUserReviews;
-        this.dvd = dvd;
-        this.boxOffice = boxOffice;
-        this.production = production;
-        this.website = website;
-        this.response = response;
-    }
 
     public String getTitle() {
         return title;

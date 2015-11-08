@@ -14,10 +14,10 @@ public abstract class Query<R> {
         this.job = job;
     }
 
-    public void run() throws InterruptedException, ExecutionException {
+    public R evaluate() throws InterruptedException, ExecutionException {
         ICompletableFuture<R> future = getFuture();
         R result = future.get();
-        // TODO
+        return result;
     }
 
     protected abstract ICompletableFuture<R> getFuture();
