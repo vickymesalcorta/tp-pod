@@ -2,7 +2,6 @@ package ar.edu.itba.pod.query.query2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
@@ -14,7 +13,6 @@ public class ReduceBestMetascore implements ReducerFactory<Integer, Movie, List<
 
     @Override
     public Reducer<Movie, List<Movie>> newReducer(Integer year) {
-
         return new Reducer<Movie, List<Movie>>() {
 
             private int bestMetascore = 0;

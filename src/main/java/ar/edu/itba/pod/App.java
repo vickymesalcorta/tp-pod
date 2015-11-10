@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
 import com.hazelcast.client.HazelcastClient;
@@ -17,6 +18,7 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 
 import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.query.query1.Query1;
 import ar.edu.itba.pod.query.query2.Query2;
 import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
@@ -39,12 +41,27 @@ public class App {
         JobTracker tracker = client.getJobTracker(JOB_TRACKER);
         Job<String, Movie> job = tracker.newJob(KeyValueSource.fromMap(map));
 
+        int queryN = 1;
         // Switch de queries y llamar a la que corresponda
-        Query2 query = new Query2(job, 2000);
-        Map<Integer, List<Movie>> moviesByYear = query.evaluate();
-        moviesByYear.forEach(
-                (year, movies) -> movies.forEach(
-                        movie -> System.out.println("Year: " + year + ", Title:" + movie.getTitle())));
+        switch (queryN) {
+        case 1:
+            Query1 query1 = new Query1(job, 5);
+            List<Entry<String, Integer>> mostPopularActorsByVotes = query1.evaluate();
+            mostPopularActorsByVotes
+                    .forEach(entry -> System.out.println("Actor: " + entry.getKey() + ", Votes: " + entry.getValue()));
+            break;
+        case 2:
+            Query2 query2 = new Query2(job, 2000);
+            Map<Integer, List<Movie>> moviesByYear = query2.evaluate();
+            moviesByYear.forEach((year, movies) -> movies
+                    .forEach(movie -> System.out.println("Year: " + year + ", Title:" + movie.getTitle())));
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        }
+
     }
 
     private static void readMoviesIntoMap(String path, IMap<String, Movie> map) {
