@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
@@ -20,6 +21,7 @@ import com.hazelcast.mapreduce.KeyValueSource;
 import ar.edu.itba.pod.model.Movie;
 import ar.edu.itba.pod.query.query1.Query1;
 import ar.edu.itba.pod.query.query2.Query2;
+import ar.edu.itba.pod.query.query4.Query4;
 import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
 
@@ -41,7 +43,7 @@ public class App {
         JobTracker tracker = client.getJobTracker(JOB_TRACKER);
         Job<String, Movie> job = tracker.newJob(KeyValueSource.fromMap(map));
 
-        int queryN = 1;
+        int queryN = 4;
         // Switch de queries y llamar a la que corresponda
         switch (queryN) {
         case 1:
@@ -59,6 +61,13 @@ public class App {
         case 3:
             break;
         case 4:
+            Query4 query4 = new Query4(job);
+            Map<String, List<String>> fetishActorsByDirector = query4.evaluate();
+            fetishActorsByDirector.forEach((director, actors) -> {
+                String actorListString = actors.stream().map(actor -> actor + ",").collect(Collectors.joining());
+                System.out.println("Director: " + director + ", Actors: ["
+                        + actorListString.substring(0, actorListString.length() - 2) + "]");
+            });
             break;
         }
 
