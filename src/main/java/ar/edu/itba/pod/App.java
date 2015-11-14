@@ -56,7 +56,7 @@ public class App {
             Query2 query2 = new Query2(job, 2000);
             Map<Integer, List<Movie>> moviesByYear = query2.evaluate();
             moviesByYear.forEach((year, movies) -> movies
-                    .forEach(movie -> System.out.println("Year: " + year + ", Title:" + movie.getTitle())));
+                    .forEach(movie -> System.out.println("Year: " + year + ", Title: " + movie.getTitle())));
             break;
         case 3:
             break;
@@ -70,13 +70,12 @@ public class App {
             });
             break;
         }
-
     }
 
     private static void readMoviesIntoMap(String path, IMap<String, Movie> map) {
         try (InputStream is = App.class.getClassLoader().getResourceAsStream(path);
-                InputStreamReader isr = new InputStreamReader(is);
-                LineNumberReader reader = new LineNumberReader(isr);) {
+             InputStreamReader isr = new InputStreamReader(is);
+             LineNumberReader reader = new LineNumberReader(isr);) {
             ObjectMapper mapper = JsonFactory.create();
 
             String line;
