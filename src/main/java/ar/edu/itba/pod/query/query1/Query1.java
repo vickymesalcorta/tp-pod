@@ -6,21 +6,21 @@ import java.util.Map;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.mapreduce.Job;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 import ar.edu.itba.pod.query.Query;
 
 public class Query1 extends Query<List<Map.Entry<String, Integer>>> {
-    private final int n;
+    private final int limit;
 
-    public Query1(Job<String, Movie> job, int n) {
+    public Query1(Job<String, ImdbEntry> job, int limit) {
         super(job);
-        this.n = n;
+        this.limit = limit;
     }
 
     @Override
     protected ICompletableFuture<List<Map.Entry<String, Integer>>> getFuture() {
         return getJob().mapper(new MapVotesByActors())
                 .reducer(new ReduceMostPopularActors())
-                .submit(new CollateNMostPopularActors(n));
+                .submit(new CollateMostPopularActors(limit));
     }
 }

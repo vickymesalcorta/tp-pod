@@ -5,12 +5,12 @@ import java.util.concurrent.ExecutionException;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.mapreduce.Job;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 
 public abstract class Query<R> {
-    private Job<String, Movie> job;
+    private Job<String, ImdbEntry> job;
 
-    public Query(Job<String, Movie> job) {
+    public Query(Job<String, ImdbEntry> job) {
         this.job = job;
     }
 
@@ -22,7 +22,7 @@ public abstract class Query<R> {
 
     protected abstract ICompletableFuture<R> getFuture();
 
-    protected Job<String, Movie> getJob() {
+    protected Job<String, ImdbEntry> getJob() {
         return job;
     }
 }

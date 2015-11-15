@@ -8,13 +8,13 @@ import java.util.stream.StreamSupport;
 
 import com.hazelcast.mapreduce.Collator;
 
-public class CollateNMostPopularActors implements
+public class CollateMostPopularActors implements
         Collator<Map.Entry<String, Integer>, List<Map.Entry<String, Integer>>> {
 
-    private int n;
+    private final int limit;
 
-    public CollateNMostPopularActors(int n) {
-        this.n = n;
+    public CollateMostPopularActors(int limit) {
+        this.limit = limit;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class CollateNMostPopularActors implements
                                 .compareTo(actorVotes2.getKey());
                     }
                     return comp;
-                }).limit(n).collect(Collectors.toList());
+                }).limit(limit).collect(Collectors.toList());
     }
 }

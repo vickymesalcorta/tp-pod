@@ -6,17 +6,17 @@ import java.util.Map;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.mapreduce.Job;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 import ar.edu.itba.pod.query.Query;
 
 public class Query4 extends Query<Map<String, List<String>>> {
-    public Query4(Job<String, Movie> job) {
+    public Query4(Job<String, ImdbEntry> job) {
         super(job);
     }
 
     @Override
     protected ICompletableFuture<Map<String, List<String>>> getFuture() {
-        return getJob().mapper(new MapDirectorsByActors())
-                .reducer(new ReduceFetishActorsByDirector()).submit();
+        return getJob().mapper(new MapActorsByDirectors())
+                .reducer(new ReduceFetishActorsByDirectors()).submit();
     }
 }

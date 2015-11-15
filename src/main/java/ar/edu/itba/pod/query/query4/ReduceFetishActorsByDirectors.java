@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 
-public class ReduceFetishActorsByDirector
+public class ReduceFetishActorsByDirectors
         implements ReducerFactory<String, String, List<String>> {
 
     private static final long serialVersionUID = 7278272641482253338L;
@@ -30,8 +30,7 @@ public class ReduceFetishActorsByDirector
             public List<String> finalizeReduce() {
                 return appearancesByActor.entrySet().stream()
                         .filter(entry -> entry.getValue() == maxAppearances)
-                        .sorted((entry1, entry2) -> entry1.getKey()
-                                .compareTo(entry2.getKey()))
+                        .sorted(Map.Entry.comparingByKey())
                         .map(Map.Entry::getKey).collect(Collectors.toList());
             }
         };

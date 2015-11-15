@@ -3,10 +3,10 @@ package ar.edu.itba.pod.query.query2;
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 
 public class MapMoviesAfterYear
-        implements Mapper<String, Movie, Integer, Movie> {
+        implements Mapper<String, ImdbEntry, Integer, ImdbEntry> {
 
     private static final long serialVersionUID = -2770978103406523861L;
 
@@ -17,12 +17,13 @@ public class MapMoviesAfterYear
     }
 
     @Override
-    public void map(String id, Movie movie, Context<Integer, Movie> context) {
-        if (!movie.isMovie()) {
+    public void map(String id, ImdbEntry entry,
+            Context<Integer, ImdbEntry> context) {
+        if (!entry.isMovie()) {
             return;
         }
-        if (movie.getYear() >= this.year) {
-            context.emit(movie.getYear(), movie);
+        if (entry.getYear() >= this.year) {
+            context.emit(entry.getYear(), entry);
         }
     }
 }

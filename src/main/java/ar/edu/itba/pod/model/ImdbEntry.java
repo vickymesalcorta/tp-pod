@@ -9,7 +9,7 @@ import com.hazelcast.nio.serialization.DataSerializable;
 
 import io.advantageous.boon.json.annotations.JsonProperty;
 
-public class Movie implements DataSerializable {
+public class ImdbEntry implements DataSerializable {
     private static final String MOVIE_TYPE_ID = "movie";
     private static final String THOUSAND_SEPARATOR = ",";
     private static final Pattern ACTOR_SEPARATOR_PATTERN = Pattern
@@ -32,7 +32,7 @@ public class Movie implements DataSerializable {
     @JsonProperty("Writer")
     private String writer;
     @JsonProperty("Actors")
-    private String actors;
+    private String actorsString;
     @JsonProperty("Plot")
     private String plot;
     @JsonProperty("Language")
@@ -73,7 +73,7 @@ public class Movie implements DataSerializable {
     @JsonProperty("Response")
     private String response;
 
-    public Movie() {
+    public ImdbEntry() {
     }
 
     public String getTitle() {
@@ -140,12 +140,12 @@ public class Movie implements DataSerializable {
         this.writer = writer;
     }
 
-    public String getActors() {
-        return actors;
+    public String getActorsString() {
+        return actorsString;
     }
 
-    public void setActors(String actors) {
-        this.actors = actors;
+    public void setActorsString(String actorsString) {
+        this.actorsString = actorsString;
     }
 
     public String getPlot() {
@@ -357,8 +357,8 @@ public class Movie implements DataSerializable {
                 .valueOf(getImdbVotesString().replace(THOUSAND_SEPARATOR, ""));
     }
 
-    public String[] getActorsArray() {
-        return ACTOR_SEPARATOR_PATTERN.split(getActors());
+    public String[] getActors() {
+        return ACTOR_SEPARATOR_PATTERN.split(getActorsString());
     }
 
     public int getYear() {
@@ -378,7 +378,7 @@ public class Movie implements DataSerializable {
         out.writeUTF(genre);
         out.writeUTF(director);
         out.writeUTF(writer);
-        out.writeUTF(actors);
+        out.writeUTF(actorsString);
         out.writeUTF(plot);
         out.writeUTF(language);
         out.writeUTF(country);
@@ -415,7 +415,7 @@ public class Movie implements DataSerializable {
         genre = in.readUTF();
         director = in.readUTF();
         writer = in.readUTF();
-        actors = in.readUTF();
+        actorsString = in.readUTF();
         plot = in.readUTF();
         language = in.readUTF();
         country = in.readUTF();

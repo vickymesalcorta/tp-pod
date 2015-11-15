@@ -5,21 +5,21 @@ import java.util.Arrays;
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 
-public class MapDirectorsByActors
-        implements Mapper<String, Movie, String, String> {
+public class MapActorsByDirectors
+        implements Mapper<String, ImdbEntry, String, String> {
 
     private static final long serialVersionUID = 1839804259264613924L;
 
     @Override
-    public void map(String movieId, Movie movie,
+    public void map(String entryId, ImdbEntry entry,
             Context<String, String> context) {
-        if (!movie.isMovie()) {
+        if (!entry.isMovie()) {
             return;
         }
-        String[] actors = movie.getActorsArray();
-        String director = movie.getDirector();
+        String[] actors = entry.getActors();
+        String director = entry.getDirector();
         Arrays.stream(actors).forEach(actor -> context.emit(director, actor));
     }
 }

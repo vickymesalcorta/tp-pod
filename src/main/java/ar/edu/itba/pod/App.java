@@ -18,7 +18,7 @@ import com.hazelcast.mapreduce.Job;
 import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 
-import ar.edu.itba.pod.model.Movie;
+import ar.edu.itba.pod.model.ImdbEntry;
 import ar.edu.itba.pod.query.query1.Query1;
 import ar.edu.itba.pod.query.query2.Query2;
 import ar.edu.itba.pod.query.query4.Query4;
@@ -30,20 +30,21 @@ public class App {
     private static final String MAP_NAME = "DataMap";
     private static final String[] DATA_FILES_PATHS = new String[] {
             "imdb-40.json" };
-    private static final String JOB_TRACKER = "JobTracker";
+    private static final String JOB_TRACKER_NAME = "JobTracker";
 
     public static void main(String[] args)
             throws InterruptedException, ExecutionException {
         ClientConfig conf = new ClientConfig();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(conf);
 
-        IMap<String, Movie> map = client.getMap(MAP_NAME);
+        IMap<String, ImdbEntry> map = client.getMap(MAP_NAME);
         for (String path : DATA_FILES_PATHS) {
             readMoviesIntoMap(path, map);
         }
 
-        JobTracker tracker = client.getJobTracker(JOB_TRACKER);
-        Job<String, Movie> job = tracker.newJob(KeyValueSource.fromMap(map));
+        JobTracker tracker = client.getJobTracker(JOB_TRACKER_NAME);
+        Job<String, ImdbEntry> job = tracker
+                .newJob(KeyValueSource.fromMap(map));
 
         int queryN = 4;
         // Switch de queries y llamar a la que corresponda
@@ -58,7 +59,7 @@ public class App {
             break;
         case 2:
             Query2 query2 = new Query2(job, 2000);
-            Map<Integer, List<Movie>> moviesByYear = query2.evaluate();
+            Map<Integer, List<ImdbEntry>> moviesByYear = query2.evaluate();
             moviesByYear.forEach((year, movies) -> movies
                     .forEach(movie -> System.out.println(
                             "Year: " + year + ", Title: " + movie.getTitle())));
@@ -85,7 +86,7 @@ public class App {
     }
 
     private static void readMoviesIntoMap(String path,
-            IMap<String, Movie> map) {
+            IMap<String, ImdbEntry> map) {
         try (InputStream is = App.class.getClassLoader()
                 .getResourceAsStream(path);
                 InputStreamReader isr = new InputStreamReader(is);
@@ -101,7 +102,7 @@ public class App {
                     break;
                 default:
                     line = line.split("},")[0];
-                    Movie movie = mapper.fromJson(line, Movie.class);
+                    ImdbEntry movie = mapper.fromJson(line, ImdbEntry.class);
                     map.set(movie.getImdbId(), movie);
                 }
             }
