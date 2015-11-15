@@ -31,13 +31,20 @@ public class App {
     private static final String MAP_NAME = "DataMap";
     private static final String JOB_TRACKER_NAME = "JobTracker";
 
+    private static final String QUERY_N_PARAM_ID = "query";
+    private static final String PATH_PARAM_ID = "path";
+    private static final String MIN_YEAR_PARAM_ID = "tope";
+    private static final String ACTOR_LIMIT_PARAM_ID = "N";
+
     public static void main(String[] args)
             throws InterruptedException, ExecutionException {
         ArgumentParser parser = ArgumentParser.builder()
-                .withMandatoryArgument("query").withMandatoryArgument("path")
-                .withOptionalArgument("tope").withOptionalArgument("N")
+                .withMandatoryArgument(QUERY_N_PARAM_ID)
+                .withMandatoryArgument(PATH_PARAM_ID)
+                .withOptionalArgument(MIN_YEAR_PARAM_ID)
+                .withOptionalArgument(ACTOR_LIMIT_PARAM_ID)
                 .parse(args);
-        String path = parser.getStringArgument("path");
+        String path = parser.getStringArgument(PATH_PARAM_ID);
 
         ClientConfig conf = new ClientConfig();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(conf);
@@ -49,11 +56,11 @@ public class App {
         Job<String, ImdbEntry> job = tracker
                 .newJob(KeyValueSource.fromMap(map));
 
-        int queryN = parser.getIntArgument("query");
+        int queryN = parser.getIntArgument(QUERY_N_PARAM_ID);
         // Switch de queries y llamar a la que corresponda
         switch (queryN) {
         case 1:
-            int limit = parser.getIntArgument("N");
+            int limit = parser.getIntArgument(ACTOR_LIMIT_PARAM_ID);
             Query1 query1 = new Query1(job, limit);
             List<Entry<String, Integer>> mostPopularActorsByVotes = query1
                     .evaluate();
@@ -62,7 +69,7 @@ public class App {
                             + entry.getKey() + ", Votes: " + entry.getValue()));
             break;
         case 2:
-            int minYear = parser.getIntArgument("tope");
+            int minYear = parser.getIntArgument(MIN_YEAR_PARAM_ID);
             Query2 query2 = new Query2(job, minYear);
             Map<Integer, List<ImdbEntry>> moviesByYear = query2.evaluate();
             moviesByYear.forEach((year, movies) -> movies
@@ -88,8 +95,8 @@ public class App {
     private static void readMoviesIntoMap(String path,
             IMap<String, ImdbEntry> map) {
         try (InputStream is = new FileInputStream(path);
-             InputStreamReader isr = new InputStreamReader(is);
-             LineNumberReader reader = new LineNumberReader(isr)) {
+                InputStreamReader isr = new InputStreamReader(is);
+                LineNumberReader reader = new LineNumberReader(isr)) {
             ObjectMapper mapper = JsonFactory.create();
 
             String line;
