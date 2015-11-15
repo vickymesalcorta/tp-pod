@@ -3,7 +3,9 @@ package ar.edu.itba.pod.query.query1;
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 
-public class ReduceMostPopularActors implements ReducerFactory<String, Integer, Integer> {
+public class ReduceMostPopularActors
+        implements ReducerFactory<String, Integer, Integer> {
+
     private static final long serialVersionUID = -4426457058094255984L;
 
     @Override

@@ -10,7 +10,7 @@ import ar.edu.itba.pod.model.Movie;
 import ar.edu.itba.pod.query.Query;
 
 public class Query1 extends Query<List<Map.Entry<String, Integer>>> {
-    private int n;
+    private final int n;
 
     public Query1(Job<String, Movie> job, int n) {
         super(job);
@@ -19,8 +19,8 @@ public class Query1 extends Query<List<Map.Entry<String, Integer>>> {
 
     @Override
     protected ICompletableFuture<List<Map.Entry<String, Integer>>> getFuture() {
-        return getJob().mapper(new MapActorsByVotes()).reducer(new ReduceMostPopularActors())
+        return getJob().mapper(new MapVotesByActors())
+                .reducer(new ReduceMostPopularActors())
                 .submit(new CollateNMostPopularActors(n));
     }
-
 }

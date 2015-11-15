@@ -10,8 +10,7 @@ import ar.edu.itba.pod.model.Movie;
 import ar.edu.itba.pod.query.Query;
 
 public class Query2 extends Query<Map<Integer, List<Movie>>> {
-
-    private int year;
+    private final int year;
 
     public Query2(Job<String, Movie> job, int year) {
         super(job);
@@ -20,7 +19,7 @@ public class Query2 extends Query<Map<Integer, List<Movie>>> {
 
     @Override
     protected ICompletableFuture<Map<Integer, List<Movie>>> getFuture() {
-        return getJob().mapper(new MapMoviesAfterYear(year)).reducer(new ReduceBestMetascore()).submit();
+        return getJob().mapper(new MapMoviesAfterYear(year))
+                .reducer(new ReduceBestMetascore()).submit();
     }
-
 }

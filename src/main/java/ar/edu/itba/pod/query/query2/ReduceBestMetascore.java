@@ -8,7 +8,9 @@ import com.hazelcast.mapreduce.ReducerFactory;
 
 import ar.edu.itba.pod.model.Movie;
 
-public class ReduceBestMetascore implements ReducerFactory<Integer, Movie, List<Movie>> {
+public class ReduceBestMetascore
+        implements ReducerFactory<Integer, Movie, List<Movie>> {
+
     private static final long serialVersionUID = -7396379425201972905L;
 
     @Override
@@ -20,7 +22,7 @@ public class ReduceBestMetascore implements ReducerFactory<Integer, Movie, List<
 
             @Override
             public void reduce(Movie movie) {
-                int metascore = Integer.valueOf(movie.getMetascore());
+                int metascore = movie.getMetascore();
                 if (metascore > bestMetascore) {
                     bestMetascore = metascore;
                     movies = new ArrayList<Movie>();

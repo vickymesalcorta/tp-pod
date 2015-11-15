@@ -28,10 +28,12 @@ import io.advantageous.boon.json.ObjectMapper;
 public class App {
 
     private static final String MAP_NAME = "DataMap";
-    private static final String[] DATA_FILES_PATHS = new String[] { "imdb-40.json" };
+    private static final String[] DATA_FILES_PATHS = new String[] {
+            "imdb-40.json" };
     private static final String JOB_TRACKER = "JobTracker";
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args)
+            throws InterruptedException, ExecutionException {
         ClientConfig conf = new ClientConfig();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(conf);
 
@@ -48,34 +50,46 @@ public class App {
         switch (queryN) {
         case 1:
             Query1 query1 = new Query1(job, 5);
-            List<Entry<String, Integer>> mostPopularActorsByVotes = query1.evaluate();
+            List<Entry<String, Integer>> mostPopularActorsByVotes = query1
+                    .evaluate();
             mostPopularActorsByVotes
-                    .forEach(entry -> System.out.println("Actor: " + entry.getKey() + ", Votes: " + entry.getValue()));
+                    .forEach(entry -> System.out.println("Actor: "
+                            + entry.getKey() + ", Votes: " + entry.getValue()));
             break;
         case 2:
             Query2 query2 = new Query2(job, 2000);
             Map<Integer, List<Movie>> moviesByYear = query2.evaluate();
             moviesByYear.forEach((year, movies) -> movies
-                    .forEach(movie -> System.out.println("Year: " + year + ", Title: " + movie.getTitle())));
+                    .forEach(movie -> System.out.println(
+                            "Year: " + year + ", Title: " + movie.getTitle())));
             break;
         case 3:
             break;
         case 4:
             Query4 query4 = new Query4(job);
-            Map<String, List<String>> fetishActorsByDirector = query4.evaluate();
+            Map<String, List<String>> fetishActorsByDirector = query4
+                    .evaluate();
             fetishActorsByDirector.forEach((director, actors) -> {
-                String actorListString = actors.stream().map(actor -> actor + ",").collect(Collectors.joining());
-                System.out.println("Director: " + director + ", Actors: ["
-                        + actorListString.substring(0, actorListString.length() - 2) + "]");
+                String actorListString = actors.stream()
+                        .map(actor -> actor + ",")
+                        .collect(Collectors.joining());
+                System.out
+                        .println(
+                                "Director: " + director + ", Actors: ["
+                                        + actorListString.substring(0,
+                                                actorListString.length() - 2)
+                                + "]");
             });
             break;
         }
     }
 
-    private static void readMoviesIntoMap(String path, IMap<String, Movie> map) {
-        try (InputStream is = App.class.getClassLoader().getResourceAsStream(path);
-             InputStreamReader isr = new InputStreamReader(is);
-             LineNumberReader reader = new LineNumberReader(isr);) {
+    private static void readMoviesIntoMap(String path,
+            IMap<String, Movie> map) {
+        try (InputStream is = App.class.getClassLoader()
+                .getResourceAsStream(path);
+                InputStreamReader isr = new InputStreamReader(is);
+                LineNumberReader reader = new LineNumberReader(isr)) {
             ObjectMapper mapper = JsonFactory.create();
 
             String line;

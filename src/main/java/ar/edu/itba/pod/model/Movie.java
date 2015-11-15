@@ -1,6 +1,7 @@
 package ar.edu.itba.pod.model;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
@@ -9,10 +10,15 @@ import com.hazelcast.nio.serialization.DataSerializable;
 import io.advantageous.boon.json.annotations.JsonProperty;
 
 public class Movie implements DataSerializable {
+    private static final String MOVIE_TYPE_ID = "movie";
+    private static final String THOUSAND_SEPARATOR = ",";
+    private static final Pattern ACTOR_SEPARATOR_PATTERN = Pattern
+            .compile(",[ ]?");
+
     @JsonProperty("Title")
     private String title;
     @JsonProperty("Year")
-    private String year;
+    private String yearString;
     @JsonProperty("Rated")
     private String rated;
     @JsonProperty("Released")
@@ -38,9 +44,10 @@ public class Movie implements DataSerializable {
     @JsonProperty("Poster")
     private String poster;
     @JsonProperty("Metascore")
-    private String metascore;
+    private String metascoreString;
     private String imdbRating;
-    private String imdbVotes;
+    @JsonProperty("imdbVotes")
+    private String imdbVotesString;
     @JsonProperty("imdbID")
     private String imdbId;
     @JsonProperty("Type")
@@ -66,7 +73,8 @@ public class Movie implements DataSerializable {
     @JsonProperty("Response")
     private String response;
 
-    public Movie(){}
+    public Movie() {
+    }
 
     public String getTitle() {
         return title;
@@ -76,12 +84,12 @@ public class Movie implements DataSerializable {
         this.title = title;
     }
 
-    public String getYear() {
-        return year;
+    public String getYearString() {
+        return yearString;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setYearString(String year) {
+        this.yearString = year;
     }
 
     public String getRated() {
@@ -180,12 +188,12 @@ public class Movie implements DataSerializable {
         this.poster = poster;
     }
 
-    public String getMetascore() {
-        return metascore;
+    public String getMetascoreString() {
+        return metascoreString;
     }
 
-    public void setMetascore(String metascore) {
-        this.metascore = metascore;
+    public void setMetascoreString(String metascore) {
+        this.metascoreString = metascore;
     }
 
     public String getImdbRating() {
@@ -196,12 +204,12 @@ public class Movie implements DataSerializable {
         this.imdbRating = imdbRating;
     }
 
-    public String getImdbVotes() {
-        return imdbVotes;
+    public String getImdbVotesString() {
+        return imdbVotesString;
     }
 
-    public void setImdbVotes(String imdbVotes) {
-        this.imdbVotes = imdbVotes;
+    public void setImdbVotesString(String imdbVotes) {
+        this.imdbVotesString = imdbVotes;
     }
 
     public String getImdbId() {
@@ -340,9 +348,30 @@ public class Movie implements DataSerializable {
         this.response = response;
     }
 
+    public boolean isMovie() {
+        return MOVIE_TYPE_ID.equals(getType());
+    }
+
+    public int getImdbVotes() {
+        return Integer
+                .valueOf(getImdbVotesString().replace(THOUSAND_SEPARATOR, ""));
+    }
+
+    public String[] getActorsArray() {
+        return ACTOR_SEPARATOR_PATTERN.split(getActors());
+    }
+
+    public int getYear() {
+        return Integer.valueOf(getYearString());
+    }
+
+    public int getMetascore() {
+        return Integer.valueOf(getMetascoreString());
+    }
+
     public void writeData(ObjectDataOutput out) throws IOException {
         out.writeUTF(title);
-        out.writeUTF(year);
+        out.writeUTF(yearString);
         out.writeUTF(rated);
         out.writeUTF(released);
         out.writeUTF(runtime);
@@ -355,9 +384,9 @@ public class Movie implements DataSerializable {
         out.writeUTF(country);
         out.writeUTF(awards);
         out.writeUTF(poster);
-        out.writeUTF(metascore);
+        out.writeUTF(metascoreString);
         out.writeUTF(imdbRating);
-        out.writeUTF(imdbVotes);
+        out.writeUTF(imdbVotesString);
         out.writeUTF(imdbId);
         out.writeUTF(type);
         out.writeUTF(tomatoMeter);
@@ -379,7 +408,7 @@ public class Movie implements DataSerializable {
 
     public void readData(ObjectDataInput in) throws IOException {
         title = in.readUTF();
-        year = in.readUTF();
+        yearString = in.readUTF();
         rated = in.readUTF();
         released = in.readUTF();
         runtime = in.readUTF();
@@ -392,9 +421,9 @@ public class Movie implements DataSerializable {
         country = in.readUTF();
         awards = in.readUTF();
         poster = in.readUTF();
-        metascore = in.readUTF();
+        metascoreString = in.readUTF();
         imdbRating = in.readUTF();
-        imdbVotes = in.readUTF();
+        imdbVotesString = in.readUTF();
         imdbId = in.readUTF();
         type = in.readUTF();
         tomatoMeter = in.readUTF();
