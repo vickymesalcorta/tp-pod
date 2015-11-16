@@ -3,7 +3,7 @@ IMBD query analysis
 
 ## Como preparar el entorno a partir del codigo fuente para ejecutar la aplicacion en un ambiente con varios nodos
 1. Correr el archivo ./start-node.sh en todas las computadoras que actuarán como nodos del cluster.
-2. Para ejecutar consultas al cluster: java ar.edu.itba.pod.App N=<numero> path=<path absoluto>
+2. Para ejecutar consultas al cluster: java ar.edu.itba.pod.App [N=10|tope=1995] path=./src/main/resources/imdb-20K.json
 
 ## Corridas
   # Query 1 con el archivo imdb-20K.json: query=1 N=10 path=./src/main/resources/imdb-20K.json
