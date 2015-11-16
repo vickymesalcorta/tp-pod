@@ -9,22 +9,22 @@ IMBD query analysis
   # Query 1 con el archivo imdb-20K.json: query=1 N=10 path=./src/main/resources/imdb-20K.json
     
     # 2 Nodos:
-      File parsing start: 16/25/2015  04:25:25:254
-      File parsing end: 16/25/2015  04:25:47:145
-      Map-reduce job start: 16/25/2015  04:25:47:161
-      Map-reduce job end: 16/25/2015  04:25:55:722
+      File parsing start: 16/11/2015  04:25:25:254
+      File parsing end: 16/11/2015  04:25:47:145
+      Map-reduce job start: 16/11/2015  04:25:47:161
+      Map-reduce job end: 16/11/2015  04:25:55:722
       
     # 3 Nodos:
-      File parsing start: 16/47/2015  04:47:34:538
-      File parsing end: 16/47/2015  04:47:59:293
-      Map-reduce job start: 16/47/2015  04:47:59:304
-      Map-reduce job end: 16/48/2015  04:48:05:237
+      File parsing start: 16/11/2015  04:47:34:538
+      File parsing end: 16/11/2015  04:47:59:293
+      Map-reduce job start: 16/11/2015  04:47:59:304
+      Map-reduce job end: 16/11/2015  04:48:05:237
 
     # 4 Nodos:
-      File parsing start: 16/49/2015  04:49:55:020
-      File parsing end: 16/50/2015  04:50:25:217
-      Map-reduce job start: 16/50/2015  04:50:25:243
-      Map-reduce job end: 16/50/2015  04:50:29:766
+      File parsing start: 16/11/2015  04:49:55:020
+      File parsing end: 16/11/2015  04:50:25:217
+      Map-reduce job start: 16/11/2015  04:50:25:243
+      Map-reduce job end: 16/11/2015  04:50:29:766
     
     # 5 Nodos:
     
@@ -35,10 +35,10 @@ IMBD query analysis
   # Query 2: con el archivo imdb-20K.json: query=2 tope=1995 path=src/main/resources/imdb-20K.json
     
     # 2 Nodos:
-      File parsing start: 16/28/2015  04:28:43:988
-      File parsing end: 16/29/2015  04:29:03:997
-      Map-reduce job start: 16/29/2015  04:29:04:003
-      Map-reduce job end: 16/29/2015  04:29:04:474
+      File parsing start: 16/11/2015  04:28:43:988
+      File parsing end: 16/11/2015  04:29:03:997
+      Map-reduce job start: 16/11/2015  04:29:04:003
+      Map-reduce job end: 16/11/2015  04:29:04:474
     
     # 3 Nodos:
     
@@ -54,10 +54,10 @@ IMBD query analysis
   # Query 3 con el archivo imdb-20K.json: query=3 path=src/main/resources/imdb-20K.json
     
     # 2 Nodos:
-      File parsing start: 16/30/2015  04:30:28:321
-      File parsing end: 16/30/2015  04:30:53:070
-      Map-reduce job start: 16/30/2015  04:30:53:076
-      Map-reduce job end: 16/31/2015  04:31:49:502
+      File parsing start: 16/11/2015  04:30:28:321
+      File parsing end: 16/11/2015  04:30:53:070
+      Map-reduce job start: 16/11/2015  04:30:53:076
+      Map-reduce job end: 16/11/2015  04:31:49:502
       
     # 3 Nodos:
     
@@ -73,10 +73,10 @@ IMBD query analysis
   # Query 4 con el archivo imdb-20K.json:
     
     # 2 Nodos:
-      File parsing start: 16/36/2015  04:36:20:187
-      File parsing end: 16/36/2015  04:36:39:691
-      Map-reduce job start: 16/36/2015  04:36:39:696
-      Map-reduce job end: 16/36/2015  04:36:42:954
+      File parsing start: 16/11/2015  04:36:20:187
+      File parsing end: 16/11/2015  04:36:39:691
+      Map-reduce job start: 16/11/2015  04:36:39:696
+      Map-reduce job end: 16/11/2015  04:36:42:954
       
     # 3 Nodos:
     
