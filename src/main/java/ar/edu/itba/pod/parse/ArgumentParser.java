@@ -1,4 +1,4 @@
-package ar.edu.itba.pod.util;
+package ar.edu.itba.pod.parse;
 
 import java.util.Arrays;
 import java.util.HashMap;

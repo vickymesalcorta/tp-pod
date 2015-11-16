@@ -10,6 +10,8 @@ import com.hazelcast.nio.serialization.DataSerializable;
 import io.advantageous.boon.json.annotations.JsonProperty;
 
 public class ImdbEntry implements DataSerializable {
+    private static final String NOT_APPLICABLE = "N/A";
+
     private static final String MOVIE_TYPE_ID = "movie";
     private static final String THOUSAND_SEPARATOR = ",";
     private static final Pattern ACTOR_SEPARATOR_PATTERN = Pattern
@@ -353,8 +355,12 @@ public class ImdbEntry implements DataSerializable {
     }
 
     public int getImdbVotes() {
-        return Integer
-                .valueOf(getImdbVotesString().replace(THOUSAND_SEPARATOR, ""));
+        int imdbVotes = 0;
+        if (NOT_APPLICABLE.equals(imdbVotesString)) {
+            imdbVotes = Integer
+                    .valueOf(imdbVotesString.replace(THOUSAND_SEPARATOR, ""));
+        }
+        return imdbVotes;
     }
 
     public String[] getActors() {

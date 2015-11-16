@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
+
+import org.joda.time.DateTime;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
@@ -20,10 +18,12 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 
 import ar.edu.itba.pod.model.ImdbEntry;
+import ar.edu.itba.pod.parse.ArgumentParser;
+import ar.edu.itba.pod.query.Query;
 import ar.edu.itba.pod.query.query1.Query1;
 import ar.edu.itba.pod.query.query2.Query2;
 import ar.edu.itba.pod.query.query4.Query4;
-import ar.edu.itba.pod.util.ArgumentParser;
+import ar.edu.itba.pod.util.Logger;
 import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
 
@@ -36,60 +36,61 @@ public class App {
     private static final String MIN_YEAR_PARAM_ID = "tope";
     private static final String ACTOR_LIMIT_PARAM_ID = "N";
 
+    private static DateTime fileParsingStart;
+    private static DateTime fileParsingEnd;
+    private static DateTime mapReduceJobStart;
+    private static DateTime mapReduceJobEnd;
+
     public static void main(String[] args)
-            throws InterruptedException, ExecutionException {
-        ArgumentParser parser = ArgumentParser.builder()
+            throws InterruptedException, ExecutionException, IOException {
+        ArgumentParser argumentParser = ArgumentParser.builder()
                 .withMandatoryArgument(QUERY_N_PARAM_ID)
                 .withMandatoryArgument(PATH_PARAM_ID)
                 .withOptionalArgument(MIN_YEAR_PARAM_ID)
-                .withOptionalArgument(ACTOR_LIMIT_PARAM_ID)
-                .parse(args);
-        String path = parser.getStringArgument(PATH_PARAM_ID);
+                .withOptionalArgument(ACTOR_LIMIT_PARAM_ID).parse(args);
+        String path = argumentParser.getStringArgument(PATH_PARAM_ID);
 
-        ClientConfig conf = new ClientConfig();
-        HazelcastInstance client = HazelcastClient.newHazelcastClient(conf);
+        HazelcastInstance client = HazelcastClient
+                .newHazelcastClient(new ClientConfig());
 
         IMap<String, ImdbEntry> map = client.getMap(MAP_NAME);
+
+        fileParsingStart = DateTime.now();
         readMoviesIntoMap(path, map);
+        fileParsingEnd = DateTime.now();
 
         JobTracker tracker = client.getJobTracker(JOB_TRACKER_NAME);
         Job<String, ImdbEntry> job = tracker
                 .newJob(KeyValueSource.fromMap(map));
 
-        int queryN = parser.getIntArgument(QUERY_N_PARAM_ID);
-        // Switch de queries y llamar a la que corresponda
+        int queryN = argumentParser.getIntArgument(QUERY_N_PARAM_ID);
+
+        Query<?> query = null;
         switch (queryN) {
         case 1:
-            int limit = parser.getIntArgument(ACTOR_LIMIT_PARAM_ID);
-            Query1 query1 = new Query1(job, limit);
-            List<Entry<String, Integer>> mostPopularActorsByVotes = query1
-                    .evaluate();
-            mostPopularActorsByVotes
-                    .forEach(entry -> System.out.println("Actor: "
-                            + entry.getKey() + ", Votes: " + entry.getValue()));
+            int limit = argumentParser.getIntArgument(ACTOR_LIMIT_PARAM_ID);
+            query = new Query1(job, limit);
             break;
         case 2:
-            int minYear = parser.getIntArgument(MIN_YEAR_PARAM_ID);
-            Query2 query2 = new Query2(job, minYear);
-            Map<Integer, List<ImdbEntry>> moviesByYear = query2.evaluate();
-            moviesByYear.forEach((year, movies) -> movies
-                    .forEach(movie -> System.out.println(
-                            "Year: " + year + ", Title: " + movie.getTitle())));
+            int minYear = argumentParser.getIntArgument(MIN_YEAR_PARAM_ID);
+            query = new Query2(job, minYear);
             break;
         case 3:
             break;
         case 4:
-            Query4 query4 = new Query4(job);
-            Map<String, List<String>> fetishActorsByDirector = query4
-                    .evaluate();
-            fetishActorsByDirector.forEach((director, actors) -> {
-                String actorListString = actors.stream()
-                        .collect(Collectors.joining(", "));
-                System.out.println("Director: " + director + ", Actors: ["
-                        + actorListString + "]");
-            });
+            query = new Query4(job);
             break;
         }
+
+        mapReduceJobStart = DateTime.now();
+        query.evaluate(System.out);
+        mapReduceJobEnd = DateTime.now();
+
+        Logger logger = new Logger(System.out);
+        logger.logTimestamp("File parsing start", fileParsingStart);
+        logger.logTimestamp("File parsing end", fileParsingEnd);
+        logger.logTimestamp("Map-reduce job start", mapReduceJobStart);
+        logger.logTimestamp("Map-reduce job end", mapReduceJobEnd);
     }
 
     private static void readMoviesIntoMap(String path,
