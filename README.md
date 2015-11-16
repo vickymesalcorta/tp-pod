@@ -126,7 +126,11 @@ IMBD query analysis
       Map-reduce job end: 16/11/2015  04:36:42:954
       
     # 3 Nodos:
-    
+      File parsing start: 16/11/2015  05:48:35:215
+      File parsing end: 16/11/2015  05:49:00:345
+      Map-reduce job start: 16/11/2015  05:49:00:350
+      Map-reduce job end: 16/11/2015  05:49:02:935
+
     # 4 Nodos:
       File parsing start: 16/11/2015  05:43:52:194
       File parsing end: 16/11/2015  05:44:18:674
