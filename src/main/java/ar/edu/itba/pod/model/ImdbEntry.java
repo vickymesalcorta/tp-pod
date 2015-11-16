@@ -1,6 +1,7 @@
 package ar.edu.itba.pod.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 import com.hazelcast.nio.ObjectDataInput;
@@ -9,7 +10,9 @@ import com.hazelcast.nio.serialization.DataSerializable;
 
 import io.advantageous.boon.json.annotations.JsonProperty;
 
-public class ImdbEntry implements DataSerializable {
+public class ImdbEntry implements DataSerializable, Serializable {
+
+    private static final long serialVersionUID = 303252150063077190L;
     private static final String MOVIE_TYPE_ID = "movie";
     private static final String THOUSAND_SEPARATOR = ",";
     private static final Pattern ACTOR_SEPARATOR_PATTERN = Pattern
