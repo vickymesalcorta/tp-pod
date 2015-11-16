@@ -100,7 +100,10 @@ IMBD query analysis
     # 6 Nodos:
     
     # 7 Nodos:
-    
+      File parsing start: 16/11/2015  05:33:43:794
+      File parsing end: 16/11/2015  05:34:14:404
+      Map-reduce job start: 16/11/2015  05:34:14:413
+      Map-reduce job end: 16/11/2015  05:34:35:995
 
   # Query 4 con el archivo imdb-20K.json:
     
