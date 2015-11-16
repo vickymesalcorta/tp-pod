@@ -44,11 +44,7 @@ public class App {
 
     public static void main(String[] args)
             throws InterruptedException, ExecutionException, IOException {
-        ArgumentParser argumentParser = ArgumentParser.builder()
-                .withMandatoryArgument(QUERY_N_PARAM_ID)
-                .withMandatoryArgument(PATH_PARAM_ID)
-                .withOptionalArgument(MIN_YEAR_PARAM_ID)
-                .withOptionalArgument(ACTOR_LIMIT_PARAM_ID).parse(args);
+        ArgumentParser argumentParser = parse(args);
         String path = argumentParser.getStringArgument(PATH_PARAM_ID);
 
         HazelcastInstance client = HazelcastClient
@@ -64,6 +60,28 @@ public class App {
         Job<String, ImdbEntry> job = tracker
                 .newJob(KeyValueSource.fromMap(map));
 
+        Query<?> query = getQuery(argumentParser, job);
+
+        mapReduceJobStart = DateTime.now();
+        query.evaluate(System.out);
+        mapReduceJobEnd = DateTime.now();
+
+        Logger logger = new Logger(System.out);
+        logger.logTimestamp("File parsing start", fileParsingStart);
+        logger.logTimestamp("File parsing end", fileParsingEnd);
+        logger.logTimestamp("Map-reduce job start", mapReduceJobStart);
+        logger.logTimestamp("Map-reduce job end", mapReduceJobEnd);
+    }
+
+    private static ArgumentParser parse(String[] args) {
+        return ArgumentParser.builder().withMandatoryArgument(QUERY_N_PARAM_ID)
+                .withMandatoryArgument(PATH_PARAM_ID)
+                .withOptionalArgument(MIN_YEAR_PARAM_ID)
+                .withOptionalArgument(ACTOR_LIMIT_PARAM_ID).parse(args);
+    }
+
+    private static Query<?> getQuery(ArgumentParser argumentParser,
+            Job<String, ImdbEntry> job) {
         int queryN = argumentParser.getIntArgument(QUERY_N_PARAM_ID);
 
         Query<?> query = null;
@@ -83,16 +101,7 @@ public class App {
             query = new Query4(job);
             break;
         }
-
-        mapReduceJobStart = DateTime.now();
-        query.evaluate(System.out);
-        mapReduceJobEnd = DateTime.now();
-
-        Logger logger = new Logger(System.out);
-        logger.logTimestamp("File parsing start", fileParsingStart);
-        logger.logTimestamp("File parsing end", fileParsingEnd);
-        logger.logTimestamp("Map-reduce job start", mapReduceJobStart);
-        logger.logTimestamp("Map-reduce job end", mapReduceJobEnd);
+        return query;
     }
 
     private static void readMoviesIntoMap(String path,
