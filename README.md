@@ -2,8 +2,8 @@
 IMBD query analysis
 
 # Como preparar el entorno a partir del codigo fuente para ejecutar la aplicacion en un ambiente con varios nodos
-1_ Correr el archivo ./start-node.sh en todas las computadoras que actuarán como nodos del cluster.
-2_ 
+1. Correr el archivo ./start-node.sh en todas las computadoras que actuarán como nodos del cluster.
+2.  
 
 # Corridas
   # Query 1 con el archivo imdb-20K.json: query=1 N=10 path=./src/main/resources/imdb-20K.json
