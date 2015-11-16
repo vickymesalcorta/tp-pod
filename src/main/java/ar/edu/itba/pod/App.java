@@ -47,8 +47,9 @@ public class App {
         ArgumentParser argumentParser = parse(args);
         String path = argumentParser.getStringArgument(PATH_PARAM_ID);
 
+        ClientConfig config = new ClientConfig();
         HazelcastInstance client = HazelcastClient
-                .newHazelcastClient(new ClientConfig());
+                .newHazelcastClient();
 
         IMap<String, ImdbEntry> map = client.getMap(MAP_NAME);
 
@@ -105,7 +106,7 @@ public class App {
     }
 
     private static void readMoviesIntoMap(String path,
-            IMap<String, ImdbEntry> map) {
+            IMap<String, ImdbEntry> map) throws IOException {
         try (InputStream is = new FileInputStream(path);
                 InputStreamReader isr = new InputStreamReader(is);
                 LineNumberReader reader = new LineNumberReader(isr)) {
@@ -125,7 +126,7 @@ public class App {
                 }
             }
         } catch (IOException exc) {
-            // TODO
+            throw exc;
         }
     }
 }
