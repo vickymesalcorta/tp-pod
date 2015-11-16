@@ -24,7 +24,7 @@ IMBD query analysis
     
     # 7 Nodos:
     
-  # Query 2: con el archivo imdb-20K.json:
+  # Query 2: con el archivo imdb-20K.json: query=2 tope=1995 path=src/main/resources/imdb-20K.json
     
     # 2 Nodos:
       
