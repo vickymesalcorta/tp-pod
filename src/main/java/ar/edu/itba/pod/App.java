@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.client.config.XmlClientConfigBuilder;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
@@ -29,6 +30,8 @@ import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
 
 public class App {
+    private static final String HAZELCAST_CLIENT_CONFIG_ID = "client.xml";
+
     private static final String MAP_NAME = "DataMap";
     private static final String JOB_TRACKER_NAME = "JobTracker";
 
@@ -37,20 +40,20 @@ public class App {
     private static final String MIN_YEAR_PARAM_ID = "tope";
     private static final String ACTOR_LIMIT_PARAM_ID = "N";
 
-    private static DateTime fileParsingStart;
-    private static DateTime fileParsingEnd;
-    private static DateTime mapReduceJobStart;
-    private static DateTime mapReduceJobEnd;
-
     public static void main(String[] args)
             throws InterruptedException, ExecutionException, IOException {
         ArgumentParser argumentParser = parse(args);
         String path = argumentParser.getStringArgument(PATH_PARAM_ID);
 
-        ClientConfig config = new ClientConfig();
+        XmlClientConfigBuilder configBuilder = new XmlClientConfigBuilder(
+                HAZELCAST_CLIENT_CONFIG_ID);
+        ClientConfig config = configBuilder.build();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(config);
 
         IMap<String, ImdbEntry> map = client.getMap(MAP_NAME);
+
+        DateTime fileParsingStart;
+        DateTime fileParsingEnd;
 
         fileParsingStart = DateTime.now();
         readMoviesIntoMap(path, map);
@@ -61,6 +64,9 @@ public class App {
                 .newJob(KeyValueSource.fromMap(map));
 
         Query<?> query = getQuery(argumentParser, job);
+
+        DateTime mapReduceJobStart;
+        DateTime mapReduceJobEnd;
 
         mapReduceJobStart = DateTime.now();
         query.evaluate(System.out);
