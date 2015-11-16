@@ -22,6 +22,7 @@ import ar.edu.itba.pod.parse.ArgumentParser;
 import ar.edu.itba.pod.query.Query;
 import ar.edu.itba.pod.query.query1.Query1;
 import ar.edu.itba.pod.query.query2.Query2;
+import ar.edu.itba.pod.query.query3.Query3;
 import ar.edu.itba.pod.query.query4.Query4;
 import ar.edu.itba.pod.util.Logger;
 import io.advantageous.boon.json.JsonFactory;
@@ -76,6 +77,7 @@ public class App {
             query = new Query2(job, minYear);
             break;
         case 3:
+            query = new Query3(job);
             break;
         case 4:
             query = new Query4(job);
