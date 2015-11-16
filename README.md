@@ -50,6 +50,7 @@ IMBD query analysis
       File parsing end: 16/30/2015  04:30:53:070
       Map-reduce job start: 16/30/2015  04:30:53:076
       Map-reduce job end: 16/31/2015  04:31:49:502
+      
     # 3 Nodos:
     
     # 4 Nodos:
@@ -64,6 +65,10 @@ IMBD query analysis
   # Query 4 con el archivo imdb-20K.json:
     
     # 2 Nodos:
+      File parsing start: 16/36/2015  04:36:20:187
+      File parsing end: 16/36/2015  04:36:39:691
+      Map-reduce job start: 16/36/2015  04:36:39:696
+      Map-reduce job end: 16/36/2015  04:36:42:954
       
     # 3 Nodos:
     
