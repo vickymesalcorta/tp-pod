@@ -6,9 +6,54 @@ IMBD query analysis
 2_ 
 
 # Corridas
-  # Para la Query 1 con el archivo imdb-20K.json: 
-    # 2 Nodos:
+  # Query 1 con el archivo imdb-20K.json: query=1 N=10 path=./src/main/resources/imdb-20K.json
     
+    # 2 Nodos:
+      
+    # 3 Nodos:
+    
+    # 4 Nodos:
+    
+    # 5 Nodos:
+    
+    # 6 Nodos:
+    
+    # 7 Nodos:
+    
+  # Query 2: con el archivo imdb-20K.json:
+    
+    # 2 Nodos:
+      
+    # 3 Nodos:
+    
+    # 4 Nodos:
+    
+    # 5 Nodos:
+    
+    # 6 Nodos:
+    
+    # 7 Nodos:
+    
+
+  # Query 3 con el archivo imdb-20K.json:
+    
+    # 2 Nodos:
+      
+    # 3 Nodos:
+    
+    # 4 Nodos:
+    
+    # 5 Nodos:
+    
+    # 6 Nodos:
+    
+    # 7 Nodos:
+    
+
+  # Query 4 con el archivo imdb-20K.json:
+    
+    # 2 Nodos:
+      
     # 3 Nodos:
     
     # 4 Nodos:
