@@ -48,8 +48,7 @@ public class App {
         String path = argumentParser.getStringArgument(PATH_PARAM_ID);
 
         ClientConfig config = new ClientConfig();
-        HazelcastInstance client = HazelcastClient
-                .newHazelcastClient();
+        HazelcastInstance client = HazelcastClient.newHazelcastClient(config);
 
         IMap<String, ImdbEntry> map = client.getMap(MAP_NAME);
 
