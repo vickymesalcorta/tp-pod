@@ -77,6 +77,10 @@ IMBD query analysis
       Map-reduce job end: 16/11/2015  05:23:14:035
 
     # 7 Nodos:
+      File parsing start: 16/11/2015  05:31:47:485
+      File parsing end: 16/11/2015  05:32:30:361
+      Map-reduce job start: 16/11/2015  05:32:30:367
+      Map-reduce job end: 16/11/2015  05:32:30:847
     
 
   # Query 3 con el archivo imdb-20K.json: query=3 path=src/main/resources/imdb-20K.json
